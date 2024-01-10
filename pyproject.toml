@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytorch-adaml"
+version = "0.1.0"
+authors = [{name = "Andrew Cranston"}]
+description = "An implementation of the AdamL optimizer for PyTorch."
+dependencies = [
+    "torch>=1.0"
+    # other dependencies
+]
