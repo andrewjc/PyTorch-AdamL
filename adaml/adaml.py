@@ -1,4 +1,3 @@
-import math
 import torch
 from torch.optim.optimizer import Optimizer
 
@@ -13,7 +12,7 @@ class AdamL(Optimizer):
     Parameters:
     - params (iterable): Iterable of parameters to optimize or dictionaries defining parameter groups.
     - lr (float, optional): Learning rate (default: 1e-3).
-    - betas (Tuple[float, float], optional): Coefficients used for computing running averages of gradient and its square (default: (0.9, 0.999)).
+    - betas (Tuple[float, float], optional): Coefficients used for computing running averages (default: (0.9, 0.999)).
     - eps (float, optional): Term added to the denominator to improve numerical stability (default: 1e-8).
     - weight_decay (float, optional): Weight decay (L2 penalty) (default: 0).
     """
