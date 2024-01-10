@@ -1,10 +1,16 @@
 # AdamL: A Fast Adaptive Gradient Method
 
-This repository hosts the implementation of the AdamL optimizer, as described in the paper "AdamL: A fast adaptive gradient method incorporating loss function" ([arXiv:2312.15295](https://arxiv.org/abs/2312.15295)). AdamL is an advanced optimization algorithm for deep learning, enhancing the standard Adam optimizer by incorporating adaptive learning rate adjustments based on the loss function. This implementation is designed for integration with PyTorch.
+This repository contains an implementation of the AdamL optimizer, a novel variant of the Adam optimizer that incorporates loss function information to achieve better generalization in deep learning models. The AdamL optimizer is detailed in the paper "AdamL: A fast adaptive gradient method incorporating loss function" ([arXiv:2312.15295](https://arxiv.org/abs/2312.15295)). This implementation is compatible with PyTorch and aims to provide a more efficient training process by dynamically adjusting the learning rate.
+
 
 ## Introduction
 
-AdamL is a variant of the Adam optimizer that dynamically adjusts the learning rate based on the adaptive and non-adaptive mode considerations. This approach results in more efficient training of neural networks, particularly in complex tasks. 
+AdamL enhances the standard Adam optimizer by considering the loss function during optimization, which helps in achieving faster convergence and lower objective function values compared to Adam, EAdam, and AdaBelief. It has been shown to perform well across various deep learning tasks, including training convolutional neural networks (CNNs), generative adversarial networks (GANs), and long short-term memory (LSTM) networks. Notably, AdamL can linearly converge under certain conditions, without the need for manual learning rate adjustments in the later stages of training CNNs.
+
+## Benefits
+
+* Faster Convergence: AdamL typically achieves faster convergence compared to other optimizers.
+* No Manual Learning Rate Tuning: Unlike other variants, AdamL does not require manual learning rate adjustments, turn your scheduler off!
 
 ## Installation
 
