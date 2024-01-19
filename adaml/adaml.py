@@ -1,3 +1,4 @@
+import math
 import torch
 from torch.optim.optimizer import Optimizer
 
@@ -12,7 +13,7 @@ class AdamL(Optimizer):
     Parameters:
     - params (iterable): Iterable of parameters to optimize or dictionaries defining parameter groups.
     - lr (float, optional): Learning rate (default: 1e-3).
-    - betas (Tuple[float, float], optional): Coefficients used for computing running averages (default: (0.9, 0.999)).
+    - betas (Tuple[float, float], optional): Coefficients used for computing running averages of gradient and its square (default: (0.9, 0.999)).
     - eps (float, optional): Term added to the denominator to improve numerical stability (default: 1e-8).
     - weight_decay (float, optional): Weight decay (L2 penalty) (default: 0).
     """
@@ -26,14 +27,13 @@ class AdamL(Optimizer):
         self.N_sma_max = 2 / (1 - betas[1]) - 1  # Compute max length for simple moving average (SMA)
         self.steps = 0  # Initialize step counter
 
-    def step(self, closure=None):
+    def step(self, loss, closure=None):
         """
         Performs a single optimization step (parameter update).
 
         Parameters:
         - closure (callable, optional): A closure that reevaluates the model and returns the loss.
         """
-        loss = None
         if closure is not None:
             loss = closure()
 
@@ -54,12 +54,12 @@ class AdamL(Optimizer):
                 # Update biased first moment estimate
                 exp_avg = state['exp_avg']
                 beta1 = self.beta_t
-                exp_avg.mul_(beta1).add_(1.0 - beta1, p.grad)
+                exp_avg.mul_(beta1).add_(p.grad, alpha=1.0 - beta1)
 
                 # Update biased second raw moment estimate
                 exp_avg_sq = state['exp_avg_sq']
                 beta2 = self.betas[1]
-                exp_avg_sq.mul_(beta2).addcmul_(1.0 - beta2, p.grad, p.grad)
+                exp_avg_sq.mul_(beta2).addcmul_(p.grad, p.grad, value=1.0 - beta2)
 
                 denom = exp_avg_sq.sqrt().add_(group['eps'])
 
@@ -73,6 +73,6 @@ class AdamL(Optimizer):
                 else:
                     # Non-adaptive mode
                     step_size = group['lr']
-                    p.data.add_(-step_size, p.grad)
+                    p.data.add_(p.grad, alpha=-step_size)
 
         return loss
